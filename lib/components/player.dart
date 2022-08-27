@@ -1,12 +1,13 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame/geometry.dart';
 import 'package:flame/sprite.dart';
-import 'package:rayworld/components/world_collidable.dart';
+import 'world_collidable.dart';
+
 import '../helpers/direction.dart';
 
 // the HasGameRef is known as 'mixin' in component class definition.
 class Player extends SpriteAnimationComponent
-    with HasGameRef, HasHitboxes, Collidable {
+    with HasGameRef, CollisionCallbacks {
   final double _animationSpeed = 0.15;
   late final SpriteAnimation _runDownAnimation;
   late final SpriteAnimation _runLeftAnimation;
@@ -24,7 +25,7 @@ class Player extends SpriteAnimationComponent
       : super(
           size: Vector2.all(50.0),
         ) {
-    addHitbox(HitboxRectangle());
+    add(RectangleHitbox());
   }
 
   @override
@@ -113,7 +114,7 @@ class Player extends SpriteAnimationComponent
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, Collidable other) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is WorldCollidable) {
       if (!_hasCollided) {
         _hasCollided = true;
@@ -124,7 +125,7 @@ class Player extends SpriteAnimationComponent
   }
 
   @override
-  void onCollisionEnd(Collidable other) {
+  void onCollisionEnd(PositionComponent other) {
     _hasCollided = false;
     super.onCollisionEnd(other);
   }

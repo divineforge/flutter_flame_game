@@ -8,7 +8,7 @@ import 'components/world_collidable.dart';
 import 'helpers/direction.dart';
 import 'helpers/map_loader.dart';
 
-class RayWorldGame extends FlameGame with HasCollidables {
+class RayWorldGame extends FlameGame with HasCollisionDetection {
   final Player _player = Player();
   final World _world = World();
 
